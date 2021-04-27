@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//Dtd HTML 4.01 Transitional//EN" "http://www.w3.org/tr/html4/loose.dtd">
+<html>
+	<head>
+		<title>Secure Payment Form</title>
+		<!-- Bootstrap core CSS -->
+		<link href="https://www.secure-server-hosting.com/secutran/secureforms/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+		<!-- Bootstrap theme -->
+		<link href="https://www.secure-server-hosting.com/secutran/secureforms/assets/bootstrap/css/bootstrap-theme.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
+		<script src="https://www.secure-server-hosting.com/secutran/secureforms/assets/jQuery/jquery-3.1.0.js"></script>
+		<script src="https://www.secure-server-hosting.com/secutran/secureforms/assets/bootstrap/js/bootstrap.js"></script>
+		<script src="https://www.secure-server-hosting.com/secutran/secureforms/assets/jQuery/jquery.creditCardValidator.js"></script>
+		<script type="text/javascript">
+			//RFC 2822 regular expression
+			var email = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+
+			function validateForm(theForm){
+				var error = '';
+
+				var today = new Date();
+				var month = today.getMonth()+1;
+				var year = parseFloat(today.getFullYear().toString().substr(2,2));
+
+				if(!/^[0-9]{13,21}$/.test(theForm.cardnumber.value.replace(/ /g,'')) || !mod10(theForm.cardnumber.value)) error += "\r\nInvalid card number";
+				if(parseFloat(theForm.cardstartyear.value) > year || (parseFloat(theForm.cardstartyear.value) == year && parseFloat(theForm.cardstartmonth.value) > month)) error += "\r\nInvalid start date";
+				if(parseFloat(theForm.cardexpireyear.value) < year || (parseFloat(theForm.cardexpireyear.value) == year && parseFloat(theForm.cardexpiremonth.value) < month)) error += "\r\nInvalid expiry date";
+				if(!/^[0-9]{3,4}$/.test(theForm.cv2.value)) error += "\r\nInvalid CV2 number";
+
+
+				if(error != ''){
+					alert("Please amend the below issues:\r\n"+error);
+					return false;
+				}
+				return true;
+			}
+
+			function mod10(str){
+				if(typeof str != 'string') return false;
+				var strArr = str.replace(/[^0-9]/g,'').split('');
+				var n = 0; var midArr;
+				for(var i=1; i <= strArr.length; i++)
+					if(i%2)n += parseFloat(strArr[strArr.length-i]);
+				else if(parseFloat(strArr[strArr.length-i])*2 < 10)n += parseFloat(strArr[strArr.length-i])*2;
+				else {
+					midArr = (parseFloat(strArr[strArr.length-i])*2).toString().split('');
+					n += parseFloat(midArr[0]);n += parseFloat(midArr[1]);
+				}
+				return n%10 == 0;
+			}
+
+			onload=function(){
+				var options=8;//How many drop down options to display
+				var cardstartyearname = 'cardstartyear';//Field name of the card start year field
+				var cardexpireyearname = 'cardexpireyear';//Field name of the card start year field
+				/********** DO NOT EDIT BELOW THIS LINE **********/
+				var today = new Date();
+				var year = today.getFullYear();
+				var cardstartyear = document.getElementsByName(cardstartyearname)[0];
+				var cardexpireyear = document.getElementsByName(cardexpireyearname)[0];
+				cardexpireyear.options.length = 0;
+				for(var i=0; i<=options;i++){
+					var optn = document.createElement('OPTION');
+					cardexpireyear.appendChild(optn);
+					optn.text = (parseFloat(year)+i).toString().substr(2,2);
+					optn.value = optn.text;
+
+					var optn = document.createElement('OPTION');
+					cardstartyear.appendChild(optn);
+					optn.text = (parseFloat(year)-options+i).toString().substr(2,2);
+					optn.value = optn.text;
+				}
+			};
+		</script>
+		<style>
+			/* enable absolute positioning */
+			.inner-addon {
+				position: relative;
+			}
+
+			/* style icon */
+			.inner-addon .glyphicon {
+				position: absolute;
+				padding-left: 5px;
+				pointer-events: none;
+			}
+
+			/* align icon */
+			.left-addon .glyphicon  { left:  0px;}
+			.right-addon .glyphicon { right: 0px;}
+
+			/* add padding  */
+			.left-addon input  { padding-left:  50px; }
+			.right-addon input { padding-right: 30px; }
+		</style>
+	</head>
+	<body>
+	<div class="row">&nbsp;</div>
+	<div class="row">&nbsp;</div>
+	<div class="row">&nbsp;</div>
+	<div class="container">
+		<div class="header clearfix">
+			<h1 class="text-muted text-primary">Shop Payment Page</h1>
+		</div>
+		
+		
+		<form action="/secutran/transactionsi1.php" method="post" name="basketform" id="basketform" onsubmit="return validateForm(this)">
+			<input type="hidden" name="filename" value="$filename" />
+			<input type="hidden" name='shreference' value='$shreference' />
+			<input type="hidden" name='checkcode' value='$checkcode' />
+			<input type="hidden" name='subtotal' value='$amount' />
+			<input type="hidden" name='transactiontax' value='$transactiontax' />
+			<input type="hidden" name='shippingcharge' value='$shippingcharge' />
+			<input type="hidden" name='transactionamount' value='$amount' />
+			<input type="hidden" name='transactioncurrency' value='$currency_code' />
+			<input type="hidden" name="cardholdersemail" value="$cardholdersemail" />
+			<input type="hidden" name="cardholdersname" value="$first_name &nbsp;$last_name" />
+			<input type="hidden" name="cardholderaddr1" value="$address1" />
+			<input type="hidden" name="cardholderaddr2" value="$address2" />
+			<input type="hidden" name="cardholdercity" value="$city" />
+			<input type="hidden" name="cardholderstate" value="$state" />
+			<input type="hidden" name="cardholderpostcode" value="$zip" />
+			<input type="hidden" name="cardholdercountry" value="$country" />
+			<input type="hidden" name="cardholdertelephonenumber" value="$cardholdertelephonenumber" />
+			<input type="hidden" name="deliveryname" value="$first_name &nbsp;$last_name" />
+			<input type="hidden" name="deliveryaddr1" value="$address1" />
+			<input type="hidden" name="deliveryaddr2" value="$address2" />
+			<input type="hidden" name="deliverycity" value="$city" />
+			<input type="hidden" name="deliverystate" value="$state" />
+			<input type="hidden" name="deliverypostcode" value="$zip" />
+			<input type="hidden" name="deliverycountry" value="$country" />
+			<input type="hidden" name="success_url" value="$return" />
+			<input type="hidden" name="cancel_url" value="$cancel_return" />
+			<input type="hidden" name="callbackurl" value="$callbackurl" />
+			<input type="hidden" name="callbackdata" value="$callbackdata" />
+			<input type="hidden" name='secuitems' value='$secuitems' />
+			<input type="hidden" name='secuString' value='$secuString' />
+			<input type="hidden" name="order_id" value="$invoice" />
+
+			<div class="row">
+				<div class="col-md-4 col-md-offset-1">
+					<h3>Cardholder Details</h3>
+					<div class="form-group">
+						<label for="cardholdersname">Name:</label>
+						<input type="text" class="form-control" name="cardholdersname" id="cardholdersname" value="$first_name &nbsp;$last_name"/>
+					</div>
+					<div class="form-group">
+						<label for="cardholdersemail">Email address:&nbsp;<span style="color:red;">*</span></label>
+						<input type="email" required class="form-control" name="cardholdersemail" id="cardholdersemail" value="$cardholdersemail" readonly />
+					</div>
+					<div class="form-group">
+						<label for="cardholdertelephonenumber">Phone number:&nbsp;<span style="color:red;">*</span></label>
+						<input type="number" required class="form-control" name="cardholdertelephonenumber" id="cardholdertelephonenumber" value="$cardholdertelephonenumber" readonly />
+					</div>
+					<div class="form-group">
+						<label for="cardholderaddr1">Street:&nbsp;<span style="color:red;">*</span></label>
+						<input type="text" required class="form-control" name="cardholderaddr1" id="cardholderaddr1" value="$address1 &nbsp;$address2" />
+					</div>
+					<div class="form-group">
+						<label for="cardholdercity">City/Town:&nbsp;<span style="color:red;">*</span></label>
+						<input type="text" required class="form-control" name="cardholdercity" id="cardholdercity" value="$city"/>
+					</div>
+					<div class="form-group">
+						<label for="cardholderstate">County:&nbsp;<span style="color:red;">*</span></label>
+						<input type="text" required class="form-control" name="cardholderstate" id="cardholderstate" value="$country"/>
+					</div>
+					<div class="form-group">
+						<label for="cardholderpostcode">Postcode:&nbsp;<span style="color:red;">*</span></label>
+						<input type="text" required class="form-control" name="cardholderpostcode" id="cardholderpostcode" value="$zip"/>
+					</div>
+					<input type="hidden" id="secuString" name="secuString" value="$secuString" />
+				</div>
+
+				<div class="col-md-1">&nbsp;</div>
+				<div class="col-md-4">
+
+					<h3>Delivery Details</h3>
+					<div class="form-group">
+						<label for="deliveryname">Name:</label>
+						<input type="text" class="form-control" name="deliveryname" value="$first_name &nbsp;$last_name" readonly/>
+					</div>
+					<div class="form-group">
+						<label for="deliveryAddr1">Street:</label>
+						<input type="text" class="form-control" name="deliveryAddr1" value="$address1 &nbsp;$address2" readonly/>
+					</div>
+					<div class="form-group">
+						<label for="deliveryCity">City/Town:</label>
+						<input type="text" class="form-control" name="deliveryCity" value="$city" readonly/>
+					</div>
+					<div class="form-group">
+						<label for="deliveryState">County:</label>
+						<input type="text" class="form-control" name="deliveryState" value="$state" readonly/>
+					</div>
+					<div class="form-group">
+						<label for="deliveryPostcode">Postcode:</label>
+						<input type="text" class="form-control" name="deliveryPostcode" value="$zip" readonly/>
+					</div>
+					<div class="form-group">
+						<label for="deliveryPostcode">Country:</label>
+						<input type="text" class="form-control" name="deliveryCountry" value="$country" readonly/>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4>Credit/Debit Card Details</h4>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-4 col-md-offset-1">
+						<div class="form-group">
+							<label for="cardtype">Card type:</label>
+							<select class="form-control" name="cardtype" id="cardtype">
+								<option value="Visa">Visa</option>
+								<option value="Mastercard">Mastercard</option>
+								<option value="Maestro">Maestro</option>
+								<option value="Diners">Diners</option>
+								<option value="Amex">American Express</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-2 col-md-offset-1">
+						<div class="form-group" id="cardstartmonthdiv">
+							<label for="cardstartmonth">Start month:</label>
+							<select class="form-control" name="cardstartmonth" id="cardstartmonth">
+								<option value="01">01</option>
+								<option value="02">02</option>
+								<option value="03">03</option>
+								<option value="04">04</option>
+								<option value="05">05</option>
+								<option value="06">06</option>
+								<option value="07">07</option>
+								<option value="08">08</option>
+								<option value="09">09</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group" id="cardstartyeardiv">
+							<label for="cardstartyear">Start year:</label>
+							<select class="form-control" name="cardstartyear" id="cardstartyear">
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4 col-md-offset-1">
+						<div id="cardnumberdiv" class="form-group">
+							<label for="cardnumber">Card number:&nbsp;<span style="color:red;">*</span></label>
+							<div class="inner-addon left-addon">
+								<i class="fa fa-cc-visa glyphicon" style="font-size:32px;"></i>
+								<input required value="" class="form-control" type="number" name="cardnumber" id="cardnumber" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2 col-md-offset-1">
+						<div class="form-group" id="cardexpiremonthdiv">
+							<label for="cardexpiremonth">Expiry date:&nbsp;<span style="color:red;">*</span></label>
+							<select class="form-control" name="cardexpiremonth" id="cardexpiremonth">
+								<option value="01">01</option>
+								<option value="02">02</option>
+								<option value="03">03</option>
+								<option value="04">04</option>
+								<option value="05">05</option>
+								<option value="06">06</option>
+								<option value="07">07</option>
+								<option value="08">08</option>
+								<option value="09">09</option>
+								<option value="10">10</option>
+								<option value="11">11</option>
+								<option value="12">12</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group" id="cardexpireyeardiv">
+							<label for="cardexpireyear">Expiry date:&nbsp;<span style="color:red;">*</span></label>
+							<select class="form-control" name="cardexpireyear" id="cardexpireyear">
+							</select>
+						</div>
+					</div>
+					<div class="col-md-4 col-md-offset-1">
+					<div id="cv2div" class="form-group">
+							<label for="cv2">CV2 number:&nbsp;<span style="color:red;">*</span></label>
+							<input class="form-control" type="text" name="cv2" id="cv2" value="" />
+						</div>
+					</div>
+					
+					<div class="col-md-4 col-md-offset-1">
+						
+						<div class="form-group">
+						<label for="deliveryPostcode">Final Price:</label>
+						<input type="text" class="form-control" name="deliveryCountry" value="$currency_code &nbsp;$amount" readonly/>
+					</div>
+						<div class="form-group">
+							<input type="submit" value="Complete Order" name="Complete Order" class="btn btn-primary" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	</body>
+</html>

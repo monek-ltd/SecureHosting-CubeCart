@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language version="1.0">
+	<info>
+		<title>de-DE</title>
+		<code>de-DE</code>
+		<character_set>utf-8</character_set>
+		<version>1.0.0</version>
+		<minVersion>5.0.0</minVersion>
+		<maxVersion>6.*.*</maxVersion>
+	</info>
+	<translation>
+		<group name="SecureHosting">
+			<string name="address_override"><![CDATA[Überschreiben der E-Mail-Adresse]]></string>
+			<string name="email"><![CDATA[E-Mail Adresse für SecureHosting]]></string>
+			<string name="mode"><![CDATA[Modus]]></string>
+			<string name="module_description"><![CDATA[Dies ist die Standard-Erweiterung für SecureHosting. Falls Sie erweiterte Funktionen wie Direktzahlung und SecureHosting Checkout benötigen, deaktivieren Sie diese Erweiterung und verwenden Sie stattdessen <a href="?_g=modules&type=plugins&module=SecureHosting_Pro">das SecureHosting plugin</a>]]></string>
+			<string name="module_title"><![CDATA[SecureHosting Standard]]></string>
+		</group>
+	</translation>
+</language>
