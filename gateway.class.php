@@ -69,6 +69,16 @@ class Gateway {
 		$order				= Order::getInstance();
 		$cart_order_id		= sanitizeVar($this->_basket['cart_order_id']);
 		$order_summary		= $order->getSummary($cart_order_id);
+		
+		$secuitems = '';
+		foreach ($this->_basket['contents'] as $key => $product) {
+			
+		$secuitems .= '[' . $product['product_code'] . '||' . htmlentities($product['name'], ENT_QUOTES) . '|' . number_format(($product['sale_price']), 2) . '|' . $product['quantity'] . '|' . number_format($product['sale_price']*$product['quantity'], 2) . ']';
+			
+		}
+		$invoice=$this->_basket['cart_order_id'];
+		$callbackData = "cb-api|Secuerhosting|action|callback|order_id|$invoice";
+		
 		$hidden	= array(
 			'cmd'			=> '_xclick',
 			'charset'		=> 'utf-8',
@@ -96,6 +106,11 @@ class Gateway {
 			'checkcode'	    => $this->_module['checkcode'],
 			'cardholdersemail'	 =>$order_summary['email'],
 			'cardholdertelephonenumber'	 => $order_summary['phone'],
+			'secuitems'	 => $secuitems,
+			'callbackurl'	 => $GLOBALS['storeURL'],
+			'callbackdata'	 => $callbackData,
+			'shippingcharge'	 => $this->_basket['shipping']['value'],
+			'transactiontax'	 => $order_summary['total_tax'],
 			
 
 			## IPN and Return URLs

@@ -102,6 +102,40 @@
 			<h1 class="text-muted text-primary">Shop Payment Page</h1>
 		</div>
 		
+		<div class="row">
+			<div class="col-md-4">
+				<h3>Your purchases</h3>
+			</div>
+		</div>
+		<div class="well well-lg">
+		<div class="row">
+					<strong class="col-md-2">Product Code</strong>
+					<strong class="col-md-5">Item Description</strong>
+					<strong class="col-md-1">Quantity</strong>
+					<strong class="col-md-2">Item Price</strong>
+					<strong class="col-md-2">Total Price</strong>
+
+			</div>
+			<div class="row">
+				<loopstart:shoplst:>
+					<div class="col-md-2">
+							$itemcode
+					</div>
+					<div class="col-md-5">
+							$itemdesc
+					</div>
+					<div class="col-md-1">
+							$itemquan
+					</div>
+					<div class="col-md-2">
+							$currency_code &nbsp;$itempric
+					</div>
+					<div class="col-md-2">
+							$currency_code &nbsp;$itemtota
+					</div>
+				<loopend>
+			</div>
+		</div>
 		
 		<form action="/secutran/transactionsi1.php" method="post" name="basketform" id="basketform" onsubmit="return validateForm(this)">
 			<input type="hidden" name="filename" value="$filename" />
@@ -144,11 +178,11 @@
 						<input type="text" class="form-control" name="cardholdersname" id="cardholdersname" value="$first_name &nbsp;$last_name"/>
 					</div>
 					<div class="form-group">
-						<label for="cardholdersemail">Email address:&nbsp;<span style="color:red;">*</span></label>
+						<label for="cardholdersemail">Email address:&nbsp;<span style="color:red;"></span></label>
 						<input type="email" required class="form-control" name="cardholdersemail" id="cardholdersemail" value="$cardholdersemail" readonly />
 					</div>
 					<div class="form-group">
-						<label for="cardholdertelephonenumber">Phone number:&nbsp;<span style="color:red;">*</span></label>
+						<label for="cardholdertelephonenumber">Phone number:&nbsp;<span style="color:red;"></span></label>
 						<input type="number" required class="form-control" name="cardholdertelephonenumber" id="cardholdertelephonenumber" value="$cardholdertelephonenumber" readonly />
 					</div>
 					<div class="form-group">
@@ -187,7 +221,7 @@
 						<input type="text" class="form-control" name="deliveryCity" value="$city" readonly/>
 					</div>
 					<div class="form-group">
-						<label for="deliveryState">County:</label>
+						<label for="deliveryState">State:</label>
 						<input type="text" class="form-control" name="deliveryState" value="$state" readonly/>
 					</div>
 					<div class="form-group">
