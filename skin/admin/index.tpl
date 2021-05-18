@@ -13,7 +13,7 @@
 ?>
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
 	<div id="SecureHosting" class="tab_content">
-  		<h3>SecureHosting (Monek)</h3>
+  		<h3>SecureHosting Monek</h3>
   		<p>{$LANG.SecureHosting.module_description}</p>
   		<fieldset><legend>{$LANG.module.cubecart_settings}</legend>
 			<div><label for="status">{$LANG.common.status}</label><span><input type="hidden" name="module[status]" id="status" class="toggle" value="{$MODULE.status}" /></span></div>
@@ -37,7 +37,7 @@
 				<label for="email">{$LANG.SecureHosting.mode}</label>
 					<span>
 						<select name="module[testMode]">
-        					<option value="1" {$SELECT_testMode_1}>{$LANG.SecureHosting.mode_sandbox}</option>
+        					<option value="1" {$SELECT_testMode_1}>Test</option>
         					<option value="0" {$SELECT_testMode_0}>{$LANG.SecureHosting.mode_live}</option>
     					</select>
     				</span>
