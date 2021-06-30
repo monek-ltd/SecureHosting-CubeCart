@@ -42,9 +42,7 @@
     					</select>
     				</span>
     			</div>
-            <div><label for="address_override">{$LANG.SecureHosting.address_override}</label><span><input type="hidden" name="module[address_override]" id="address_override" class="toggle" value="{$MODULE.address_override}" /></span></div>
             </fieldset>
-            <p>{$LANG.module.description_options}</p>
   		</div>
   		{$MODULE_ZONES}
   		<div class="form_control">
