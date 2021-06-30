@@ -1,18 +1,18 @@
 SecureHosting Payment Gateway for Cubecart
 ============================================
 
-Tested with Cubecart 6.4.2 
+Tested with Cubecart 6.4.3
 
 Manual Installation
 -------------------
 
-1. Create a folder called 'SecureHosting' inside '\modules\gateway\' and then upload the files inside that folder called 'SecureHosting'.
+1. Create a folder called 'SecureHosting' inside '\modules\gateway\' and then upload all the files from this project
 
-2. Within the Cubecart Admin Dashboard, open the Manage Extension Under Extensions tab and activate the "SecureHosting Monek .
+2. Within the Cubecart Admin Dashboard, open the Manage Extension Under the Extensions sub heading and activate the "SecureHosting Monek" extension
        
 
-3. Once activated, you can enter the settings for the plugin and enable the payment gateway. You will also need to configure the below settings
-		in order to complete the basic setup:
+3. Once activated, you can adjust the settings for the plugin
+   You will also need to configure the below settings in order to complete the basic setup:
 
     - **Reference** - This is the reference for your SecureHosting account. This is also known as the client login,
 	you will find the value for this within the company details section of your SecureHosting account.
